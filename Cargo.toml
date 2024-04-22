@@ -46,6 +46,7 @@ linked-hash-map = "0.5.6"
 parking_lot = "0.12.1"
 textwrap = "0.16.1"
 chrono = "0.4.35"
+camino = "1.1.6"
 
 fs-more = { git = "https://github.com/simongoricar/fs-more.git", rev = "088c1cb0421836741bffe266c69a9767d676064b", features = ["fs-err", "miette"] }
 
@@ -83,3 +84,4 @@ linked-hash-map = { workspace = true }
 parking_lot = { workspace = true }
 textwrap = { workspace = true }
 chrono = { workspace = true }
+camino = { workspace = true }

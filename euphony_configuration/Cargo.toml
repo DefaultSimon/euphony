@@ -12,3 +12,4 @@ serde = { workspace = true }
 toml = { workspace = true }
 dunce = { workspace = true }
 thiserror = { workspace = true }
+camino = { workspace = true }

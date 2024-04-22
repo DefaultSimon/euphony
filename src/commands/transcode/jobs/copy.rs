@@ -50,9 +50,7 @@ impl CopyFileJob {
         /*
          * 1. Sanity checks
          */
-        if !transcoding_config
-            .is_path_data_file_by_extension(&source_file_path)?
-        {
+        if !transcoding_config.is_data_file_by_extension(&source_file_path)? {
             return Err(miette!(
                 "Invalid source file extension: \"{}\": \
                 expected a tracked data file extension for this library (one of \"{:?}\").",

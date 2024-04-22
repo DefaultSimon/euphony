@@ -9,7 +9,7 @@ use std::time::Duration;
 
 use chrono::Local;
 use crossterm::ExecutableCommand;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::Configuration;
 use miette::{miette, Context, IntoDiagnostic, Result};
 use parking_lot::{Mutex, RwLock};
 use ratatui::backend::{Backend, CrosstermBackend};

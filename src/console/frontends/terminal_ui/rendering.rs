@@ -4,7 +4,7 @@ use std::time::{Duration, Instant};
 
 use ansi_to_tui::IntoText;
 use crossterm::event::{Event, KeyCode};
-use euphony_configuration::ui::TranscodingUiConfiguration;
+use euphony_configuration::core::TranscodingUiConfiguration;
 use miette::Result;
 use miette::{miette, IntoDiagnostic, WrapErr};
 use parking_lot::{Mutex, RwLock};

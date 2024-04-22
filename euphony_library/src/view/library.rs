@@ -3,8 +3,7 @@ use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
-use euphony_configuration::library::LibraryConfiguration;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::{Configuration, LibraryConfiguration};
 use fs_more::directory::DirectoryScan;
 use miette::{miette, Context, Diagnostic, Result};
 use parking_lot::RwLock;
@@ -43,7 +42,7 @@ impl<'config> LibraryView<'config> {
         let library_path = Path::new(&library_config.path);
         if !library_path.exists() || !library_path.is_dir() {
             return Err(LibraryViewError::NoSuchDirectory(
-                library_config.path.clone(),
+                library_config.path.to_string(),
             ));
         }
 

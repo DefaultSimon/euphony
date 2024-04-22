@@ -2,8 +2,8 @@ use std::collections::HashMap;
 use std::path::PathBuf;
 use std::sync::Arc;
 
-use euphony_configuration::library::LibraryConfiguration;
-use euphony_configuration::{AlbumConfiguration, Configuration};
+use euphony_configuration::album::AlbumConfiguration;
+use euphony_configuration::core::{Configuration, LibraryConfiguration};
 use fs_more::directory::DirectoryScan;
 use miette::{miette, Context, Result};
 use parking_lot::{RwLock, RwLockReadGuard, RwLockWriteGuard};
@@ -55,7 +55,8 @@ impl<'config> AlbumView<'config> {
             ));
         }
 
-        let album_configuration = AlbumConfiguration::load(album_directory)?;
+        let album_configuration =
+            AlbumConfiguration::load_or_default(album_directory)?;
 
         Ok(Arc::new_cyclic(|weak| {
             RwLock::new(Self {
@@ -282,11 +283,11 @@ impl<'config> AlbumSourceFileList<'config> {
                 )?;
 
             if transcoding_configuration
-                .is_path_audio_file_by_extension(&file_relative_path)?
+                .is_audio_file_by_extension(&file_relative_path)?
             {
                 audio_files.push(file_relative_path);
             } else if transcoding_configuration
-                .is_path_data_file_by_extension(&file_relative_path)?
+                .is_data_file_by_extension(&file_relative_path)?
             {
                 data_files.push(file_relative_path);
             }

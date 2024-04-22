@@ -1,11 +1,12 @@
-use std::path::PathBuf;
 use std::process::exit;
 use std::thread;
 use std::thread::Scope;
 
+use camino::Utf8PathBuf;
 use clap::{Args, Parser, Subcommand};
 use crossterm::style::Stylize;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::Configuration;
+use euphony_configuration::ConfigurationError;
 use miette::{miette, Context, Result};
 
 use crate::console::frontends::terminal_ui::terminal::FancyTerminalBackend;
@@ -71,7 +72,7 @@ struct TranscodeAllArgs {
         long = "log-to-file",
         help = "Path to the log file. If this is unset, no logs are saved."
     )]
-    log_to_file: Option<PathBuf>,
+    log_to_file: Option<String>,
 }
 
 #[derive(Args, Eq, PartialEq)]
@@ -80,7 +81,7 @@ struct ValidateAllArgs {
         long = "log-to-file",
         help = "Path to the log file. If this is unset, no logs are saved."
     )]
-    log_to_file: Option<PathBuf>,
+    log_to_file: Option<String>,
 }
 
 #[derive(Parser)]
@@ -120,7 +121,9 @@ struct CLIArgs {
 
 /// Load and return the configuration, given the command line arguments
 /// (`-c`/`--config` can override the load path).
-fn get_configuration(args: &CLIArgs) -> Result<Configuration> {
+fn get_configuration(
+    args: &CLIArgs,
+) -> Result<Configuration, ConfigurationError> {
     if args.config.is_some() {
         Configuration::load_from_path(args.config.clone().unwrap())
     } else {
@@ -161,10 +164,15 @@ fn run_requested_cli_command<'config: 'scope, 'scope, 'scope_env: 'scope>(
         let terminal =
             get_transcode_terminal(config, transcode_args.bare_terminal);
 
-        if let Some(log_file_path) = transcode_args
-            .log_to_file
-            .or_else(|| config.logging.default_log_output_path.clone())
-        {
+
+        let log_file_path =
+            if let Some(log_file_path_string) = transcode_args.log_to_file {
+                Some(Utf8PathBuf::from(log_file_path_string))
+            } else {
+                config.logging.log_output_path.clone()
+            };
+
+        if let Some(log_file_path) = log_file_path {
             terminal
                 .enable_saving_logs_to_file(log_file_path, scope)
                 .wrap_err_with(|| {
@@ -191,13 +199,18 @@ fn run_requested_cli_command<'config: 'scope, 'scope, 'scope_env: 'scope>(
         })?;
 
         Ok(())
-    } else if let CLICommand::ValidateAll(args) = args.command {
+    } else if let CLICommand::ValidateAll(validation_args) = args.command {
         let mut terminal: ValidationTerminal = BareTerminalBackend::new().into();
 
-        if let Some(log_file_path) = args
-            .log_to_file
-            .or_else(|| config.logging.default_log_output_path.clone())
-        {
+
+        let log_file_path =
+            if let Some(log_file_path_string) = validation_args.log_to_file {
+                Some(Utf8PathBuf::from(log_file_path_string))
+            } else {
+                config.logging.log_output_path.clone()
+            };
+
+        if let Some(log_file_path) = log_file_path {
             terminal
                 .enable_saving_logs_to_file(log_file_path, scope)
                 .wrap_err_with(|| {

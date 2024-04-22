@@ -1,0 +1,42 @@
+[config]
+default_to_workspace = false
+skip_core_tasks = true
+skip_crate_env_info = true
+skip_git_env_info = true
+skip_rust_env_info = true
+min_version = "0.37.9"
+
+[env]
+CARGO_MAKE_USE_WORKSPACE_PROFILE = false
+
+
+
+
+[tasks.build-and-open-full-documentation]
+clear = true
+workspace = true
+command = "cargo"
+args = [
+    "doc",
+    "--workspace",
+    "--open"
+]
+
+[tasks.build-and-watch-workspace-documentation-with-private-items]
+clear = true
+workspace = true
+command = "cargo"
+args = [
+    "watch",
+    "--exec",
+    "doc --workspace --no-deps --document-private-items"
+]
+
+
+[tasks.documentation]
+clear = true
+workspace = true
+dependencies = [
+    "build-and-open-full-documentation",
+    "build-and-watch-workspace-documentation-with-private-items"
+]

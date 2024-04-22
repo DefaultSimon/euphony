@@ -4,6 +4,7 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 use std::{fs, thread};
 
+use camino::Utf8PathBuf;
 use crossbeam::channel::Sender;
 use euphony_configuration::get_path_extension_or_empty;
 use euphony_library::view::SharedAlbumView;
@@ -39,7 +40,7 @@ pub struct TranscodeAudioFileJob {
     target_file_path: PathBuf,
 
     /// Path to the ffmpeg binary.
-    ffmpeg_binary_path: String,
+    ffmpeg_binary_path: Utf8PathBuf,
 
     /// List of arguments to ffmpeg that will transcode the audio as configured.
     ffmpeg_arguments: Vec<String>,
@@ -68,9 +69,7 @@ impl TranscodeAudioFileJob {
             &album_locked.library_configuration().transcoding;
         let ffmpeg_config = &config.tools.ffmpeg;
 
-        if !transcoding_config
-            .is_path_audio_file_by_extension(&source_file_path)?
-        {
+        if !transcoding_config.is_audio_file_by_extension(&source_file_path)? {
             return Err(miette!(
                 "Invalid source file extension \"{}\": \
                 expected a tracked audio extension for this library (one of \"{:?}\").",
@@ -120,7 +119,7 @@ impl TranscodeAudioFileJob {
         Ok(Self {
             target_file_directory_path: target_file_directory.to_path_buf(),
             target_file_path: PathBuf::from(target_file_path_str),
-            ffmpeg_binary_path: config.tools.ffmpeg.binary.clone(),
+            ffmpeg_binary_path: config.tools.ffmpeg.binary_path.clone(),
             ffmpeg_arguments,
             queue_item,
         })

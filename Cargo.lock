@@ -169,6 +169,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7ff69b9dd49fd426c69a0db9fc04dd934cdb6645ff000864d98f7e2af8830eaa"
 
 [[package]]
+name = "camino"
+version = "1.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c59e92b5a388f549b863a7bea62612c09f24c8393560709a54558a9abdfb3b9c"
+
+[[package]]
 name = "cassowary"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -410,6 +416,7 @@ name = "euphony"
 version = "2.1.1"
 dependencies = [
  "ansi-to-tui",
+ "camino",
  "chrono",
  "clap",
  "closure",
@@ -440,6 +447,7 @@ dependencies = [
 name = "euphony_configuration"
 version = "0.1.0"
 dependencies = [
+ "camino",
  "chrono",
  "dunce",
  "miette",

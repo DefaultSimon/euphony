@@ -3,8 +3,8 @@ use std::hash::{Hash, Hasher};
 use std::path::{Path, PathBuf};
 
 use crossterm::style::Stylize;
-use euphony_configuration::library::LibraryConfiguration;
-use euphony_configuration::{Configuration, ALBUM_OVERRIDE_FILE_NAME};
+use euphony_configuration::album::ALBUM_OVERRIDE_FILE_NAME;
+use euphony_configuration::core::{Configuration, LibraryConfiguration};
 use euphony_library::state::source::SOURCE_ALBUM_STATE_FILE_NAME;
 use euphony_library::view::LibraryView;
 use miette::{miette, Context, Result};

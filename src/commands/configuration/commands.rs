@@ -1,7 +1,7 @@
 use std::path::Path;
 
 use crossterm::style::Stylize;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::Configuration;
 
 use crate::console::frontends::SimpleTerminal;
 use crate::console::LogBackend;
@@ -53,7 +53,7 @@ pub fn cmd_show_config(config: &Configuration, terminal: &mut SimpleTerminal) {
     terminal_print_group_header(terminal, "logging");
     terminal.log_println(format!(
         "    default_log_output_path = {:?}",
-        config.logging.default_log_output_path
+        config.logging.log_output_path
     ));
 
 
@@ -70,7 +70,7 @@ pub fn cmd_show_config(config: &Configuration, terminal: &mut SimpleTerminal) {
     terminal.log_println(format!(" => {}", "ffmpeg".bold()));
     terminal.log_println(format!(
         "    binary = {}",
-        config.tools.ffmpeg.binary,
+        config.tools.ffmpeg.binary_path,
     ));
     terminal.log_println(format!(
         "    audio_transcoding_args = {:?}",

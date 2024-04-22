@@ -6,7 +6,7 @@ use std::{fs, thread};
 use crossbeam::channel;
 use crossbeam::channel::{Receiver, RecvTimeoutError, Sender};
 use crossterm::style::Stylize;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::Configuration;
 use euphony_library::state::transcoded::TranscodedAlbumState;
 use euphony_library::state::AlbumFileChangesV2;
 use euphony_library::view::library::LibraryViewError;

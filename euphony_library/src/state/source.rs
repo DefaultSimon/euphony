@@ -3,8 +3,7 @@ use std::io::Write;
 use std::path::{Path, PathBuf};
 use std::{fs, io};
 
-use euphony_configuration::library::LibraryConfiguration;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::{Configuration, LibraryConfiguration};
 use miette::{miette, Context, Diagnostic, IntoDiagnostic, Result};
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -216,7 +215,7 @@ impl SourceAlbumState {
 
         if library_configuration
             .transcoding
-            .is_path_audio_file_by_extension(source_file_path)
+            .is_audio_file_by_extension(source_file_path)
             .wrap_err_with(|| {
                 miette!(
                     "Failed to check whether the file has an audio extension."
@@ -231,7 +230,7 @@ impl SourceAlbumState {
             ))
         } else if library_configuration
             .transcoding
-            .is_path_data_file_by_extension(source_file_path)
+            .is_data_file_by_extension(source_file_path)
             .wrap_err_with(|| {
                 miette!("Failed to check whether the file has a data extension.")
             })?

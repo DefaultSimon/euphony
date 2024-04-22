@@ -1,21 +1,26 @@
 use serde::Deserialize;
 
-use crate::traits::ResolvableConfiguration;
+use crate::traits::Resolve;
 
-#[derive(Clone)]
-pub struct ValidationConfiguration {
-    pub extensions_considered_audio_files: Vec<String>,
-}
+
 
 #[derive(Deserialize, Clone)]
 pub(crate) struct UnresolvedValidationConfiguration {
     extensions_considered_audio_files: Vec<String>,
 }
 
-impl ResolvableConfiguration for UnresolvedValidationConfiguration {
+
+
+#[derive(Clone)]
+pub struct ValidationConfiguration {
+    pub extensions_considered_audio_files: Vec<String>,
+}
+
+
+impl Resolve for UnresolvedValidationConfiguration {
     type Resolved = ValidationConfiguration;
 
-    fn resolve(self) -> miette::Result<Self::Resolved> {
+    fn resolve(self) -> Self::Resolved {
         let extensions_considered_audio_files = self
             .extensions_considered_audio_files
             .into_iter()
@@ -25,8 +30,8 @@ impl ResolvableConfiguration for UnresolvedValidationConfiguration {
             })
             .collect();
 
-        Ok(ValidationConfiguration {
+        ValidationConfiguration {
             extensions_considered_audio_files,
-        })
+        }
     }
 }

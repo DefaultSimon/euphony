@@ -443,12 +443,12 @@ impl<'view> AlbumFileChangesV2<'view> {
             for excess_file in excess_files {
                 if library_configuration
                     .transcoding
-                    .is_path_audio_file_by_extension(&excess_file)?
+                    .is_audio_file_by_extension(&excess_file)?
                 {
                     excess_audio_files.push(excess_file);
                 } else if library_configuration
                     .transcoding
-                    .is_path_data_file_by_extension(&excess_file)?
+                    .is_data_file_by_extension(&excess_file)?
                 {
                     excess_data_files.push(excess_file);
                 } else {

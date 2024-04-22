@@ -1,10 +1,9 @@
-pub use album::*;
+pub use error::*;
 pub use filesystem::*;
-pub use structure::*;
 
-mod album;
-pub mod error;
+pub mod album;
+pub mod core;
+mod error;
 mod filesystem;
-mod structure;
 mod traits;
 mod utilities;

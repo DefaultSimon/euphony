@@ -1,15 +1,18 @@
-#####
-## ESSENTIALS
-# This configuration table contains the most essential configuration values.
-# You may use the `{SELF}` placeholder in these two configuration values - it refers to
-# the location (directory) of the CLI binary.
+####
+## PATHS
+####
+# This table defines some important paths that will be later available as placeholders
+# for other paths.
+#
+# For all path fields in this table, you may use the `{BINARY_DIRECTORY_PATH}` placeholder to refer to
+# the directory where the `euphony` CLI binary resides.
 [paths]
-# `base_library_path` will become the `{LIBRARY_BASE}` placeholder in several tables below:
+# `base_library_path` will become the `{LIBRARY_DIRECTORY}` placeholder in several tables below:
 # - libraries,
 # - aggregated_library.
 base_library_path = "D:/_temp/MusicTesting"
-# `base_tools_path` will become the `{TOOLS_BASE}` placeholder for use in the `tools` configuration table below.
-base_tools_path = "{SELF}/tools/"
+# `base_tools_path` will become the `{TOOLS_DIRECTORY}` placeholder for use in the `tools` configuration table below.
+base_tools_path = "{BINARY_DIRECTORY_PATH}/tools/"
 
 
 
@@ -17,13 +20,16 @@ base_tools_path = "{SELF}/tools/"
 ## LOGGING
 [logging]
 # This controls how logging is performed.
+# 
 # Can be unset, in which case no logs are saved by default.
-# Even if set, it can be overriden with `--log-to-file`.
+# This configuration value can be overriden with the `--log-to-file` CLI flag.
+#
 # Available placeholders:
-# - "{LIBRARY_BASE}" is replaced with the value of `paths.base_library_path`.
-# - "{SELF}" is replaced with the directory the euphony binary resides in.
-# - "{DATETIME}" corresponds to the startup datetime of the following format: %Y-%m-%d_%H-%M-%S.
-default_log_output_path = "{LIBRARY_BASE}/euphony.log"
+# - "{LIBRARY_DIRECTORY}" is replaced with the value of `paths.base_library_path`.
+# - "{TOOLS_DIRECTORY}" is replaced with the value of `paths.base_tools_path`.
+# - "{BINARY_DIRECTORY_PATH}" is replaced with the directory the euphony binary resides in.
+# - "{STARTUP_DATE_TIME}" corresponds to the startup datetime of the following format: %Y-%m-%d_%H-%M-%S.
+log_output_path = "{LIBRARY_DIRECTORY}/euphony.log"
 
 
 
@@ -65,8 +71,8 @@ extensions_considered_audio_files = [
 [tools.ffmpeg]
 # Configures the ffmpeg binary location.
 # Available placeholders:
-# - "{TOOLS_BASE}" is replaced with the value of `paths.base_tools_path`.
-binary = "{TOOLS_BASE}/ffmpeg/bin/ffmpeg.exe"
+# - "{TOOLS_DIRECTORY}" is replaced with the value of `paths.base_tools_path`.
+binary = "{TOOLS_DIRECTORY}/ffmpeg/bin/ffmpeg.exe"
 # These are the arguments passed to ffmpeg when converting an audio file into MP3 V0.
 # Available placeholders:
 # - "{INPUT_FILE}" is replaced with absolute path to the source audio file.
@@ -129,7 +135,7 @@ other_file_extensions = ["png", "jpg", "jpeg"]
 # Another example: a library with only MP3 content.
 [libraries.standard]
 name = "Standard"
-path = "{LIBRARY_BASE}/StandardLibrary"
+path = "{LIBRARY_DIRECTORY}/StandardLibrary"
 ignored_directories_in_base_directory = ["_other"]
 
 [libraries.standard.validation]
@@ -157,7 +163,7 @@ other_file_extensions = ["png", "jpg", "jpeg"]
 # This path should point to the destination directory of your transcoded (aggregated) library.
 # Available placeholders:
 # - "{LIBRARY_BASE}" is replaced with the value of `paths.base_library_path`.
-path = "{LIBRARY_BASE}/PortableMusicLibrary"
+path = "{LIBRARY_DIRECTORY}/PortableMusicLibrary"
 # In order to speed up the transcoding you can increase the amount of threads that are transcoding (or copying) at once.
 # Anywhere between a half and all of your CPU cores are usually a good choice and result in an incredible speedup.
 # The minimum value is 1, I'd recommend somewhere around 4 - 8.

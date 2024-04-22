@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use std::sync::atomic::AtomicBool;
 
 use crossbeam::channel::Sender;
-use euphony_configuration::Configuration;
+use euphony_configuration::core::Configuration;
 use miette::{miette, Context, IntoDiagnostic, Result};
 
 use crate::commands::transcode::jobs::common::{
